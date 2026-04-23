@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Simple Website</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="logo">MySite</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <h1>Welcome to My Simple Website</h1>
+      <p>A clean, lightweight starter built with plain HTML and CSS.</p>
+      <a href="#about" class="btn">Learn More</a>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About</h2>
+      <p>This is a simple example website you can use as a starting point for your own project. Edit the HTML and CSS to make it your own.</p>
+    </section>
+
+    <section id="services" class="section alt">
+      <h2>Services</h2>
+      <div class="cards">
+        <div class="card"><h3>Design</h3><p>Clean, modern layouts.</p></div>
+        <div class="card"><h3>Development</h3><p>Fast, responsive sites.</p></div>
+        <div class="card"><h3>Support</h3><p>Reliable maintenance.</p></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Thanks! (demo form)');">
+        <label>Name<input type="text" required /></label>
+        <label>Email<input type="email" required /></label>
+        <label>Message<textarea rows="4" required></textarea></label>
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MySite. Built with HTML &amp; CSS.</p>
+  </footer>
+</body>
+</html>
