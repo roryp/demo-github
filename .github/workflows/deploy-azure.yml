@@ -1,0 +1,43 @@
+name: Deploy to Azure Storage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.html'
+      - '**.css'
+      - '.github/workflows/deploy-azure.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-azure-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload site to $web container
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          az storage blob upload-batch \
+            --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
+            --source . \
+            --destination '$web' \
+            --pattern '*.html' \
+            --overwrite
+
+          az storage blob upload-batch \
+            --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
+            --source . \
+            --destination '$web' \
+            --pattern '*.css' \
+            --overwrite
+
+      - name: Print site URL
+        run: echo "Deployed to https://demosite57342.z13.web.core.windows.net/"

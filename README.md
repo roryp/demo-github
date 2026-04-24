@@ -45,6 +45,24 @@ az storage blob upload-batch --account-name $sa -s . -d '$web' --pattern "styles
 az storage account show -n $sa -g $rg --query "primaryEndpoints.web" -o tsv
 ```
 
+## Automated deploys (GitHub Actions)
+
+A workflow at `.github/workflows/deploy-azure.yml` deploys to Azure Storage automatically whenever `*.html` or `*.css` change on `main`. It can also be run on demand via the "Run workflow" button.
+
+### Required secret
+
+| Secret | Value |
+| --- | --- |
+| `AZURE_STORAGE_CONNECTION_STRING` | Connection string for the `demosite57342` storage account |
+
+Rotate or re-issue with:
+
+```powershell
+$key  = az storage account keys list -n demosite57342 -g rg-demo-github-site --query "[0].value" -o tsv
+$conn = "DefaultEndpointsProtocol=https;AccountName=demosite57342;AccountKey=$key;EndpointSuffix=core.windows.net"
+$conn | gh secret set AZURE_STORAGE_CONNECTION_STRING --repo roryp/demo-github
+```
+
 ## Redeploy after changes
 
 ```powershell
