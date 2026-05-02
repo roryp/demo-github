@@ -6,6 +6,16 @@ A simple static website (single `index.html` with inlined CSS) deployed to Azure
 
 https://demosite57342.z13.web.core.windows.net/
 
+## Running the demo
+
+See [`DEMO.md`](DEMO.md) for the 5-minute walkthrough. To seed the demo issues on your fork, run:
+
+```powershell
+pwsh ./scripts/start-demo.ps1
+```
+
+Idempotent — creates (or reopens) the three demo issues and the `demo` label. Use `-Repo <you>/demo-github` if you're not running from a clone, or `-DryRun` to preview.
+
 ## Azure resources
 
 | Resource | Name |

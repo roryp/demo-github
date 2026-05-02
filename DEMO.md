@@ -2,15 +2,22 @@
 
 Read top to bottom. Each step says exactly what to click. Total: ~5 minutes.
 
-This repo is a two-file static site ([`index.html`](index.html) + [`styles.css`](styles.css)) that auto-deploys to Azure Storage via [`.github/workflows/deploy-azure.yml`](.github/workflows/deploy-azure.yml) on every push to `main`. Reference live URL (original repo): https://demosite57342.z13.web.core.windows.net/
+This repo is a single-file static site ([`index.html`](index.html), CSS inlined) that auto-deploys to Azure Storage via [`.github/workflows/deploy-azure.yml`](.github/workflows/deploy-azure.yml) on every push to `main`. Reference live URL (original repo): https://demosite57342.z13.web.core.windows.net/
+
+Need to seed your fork's issues first? Run [`scripts/start-demo.ps1`](scripts/start-demo.ps1) — see *Before you start* below.
 
 ## Before you start (off-camera)
 
 - **Fork `roryp/demo-github` to your own GitHub account first.** All steps below run against **your fork** — you need write access to push branches, open PRs, and merge. Throughout this doc, replace `<you>` with your GitHub username.
   - Optional: to make the live-URL refresh in §5 work on your fork, wire up your own Azure Storage `$web` container and add the `AZURE_CREDENTIALS` + `AZURE_STORAGE_ACCOUNT` secrets to your fork. Otherwise the loop ends at **Merged on `main` of your fork** — still a complete demo, just no public deploy.
 - App is open, signed in to GitHub (the account that owns the fork).
-- The **`<you>/demo-github`** Project is connected. It has at least **one open issue** — recommended primary issues for this repo:
-  - *"Add a dark-mode toggle to the nav"* (touches `index.html` + `styles.css`)
+- **Seed the demo issues on your fork.** Clone your fork, then from the repo root run:
+  ```powershell
+  pwsh ./scripts/start-demo.ps1
+  ```
+  The script is idempotent — it creates (or reopens) the three issues below and the `demo` label, and prints the resulting URLs. Re-run it before every demo to reset state. Pass `-Repo <you>/demo-github` if you're not in a clone, or `-DryRun` to preview.
+- The **`<you>/demo-github`** Project is connected. After running the script it will have these three open issues:
+  - *"Add a dark-mode toggle to the nav"* (touches `index.html`)
   - *"Fix nav-link contrast on mobile (<600px)"* (CSS-only, fast)
   - *"Add a footer social-links row"* (small visible diff)
 - Pick a **second** issue to run in parallel — e.g. *"Add a footer social-links row"* if it isn't already your primary.
