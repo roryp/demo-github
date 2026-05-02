@@ -1,6 +1,6 @@
 # demo-github
 
-A simple static website (`index.html` + `styles.css`) deployed to Azure Storage static website hosting.
+A simple static website (single `index.html` with inlined CSS) deployed to Azure Storage static website hosting.
 
 ## Live site
 
@@ -39,7 +39,6 @@ az storage blob service-properties update `
 
 # 4. Upload site files to the $web container
 az storage blob upload-batch --account-name $sa -s . -d '$web' --pattern "index.html" --overwrite
-az storage blob upload-batch --account-name $sa -s . -d '$web' --pattern "styles.css"  --overwrite
 
 # 5. Print the public URL
 az storage account show -n $sa -g $rg --query "primaryEndpoints.web" -o tsv
@@ -47,13 +46,13 @@ az storage account show -n $sa -g $rg --query "primaryEndpoints.web" -o tsv
 
 ## Automated deploys (GitHub Actions)
 
-A workflow at [`.github/workflows/deploy-azure.yml`](.github/workflows/deploy-azure.yml) deploys the site to Azure Storage whenever `*.html` or `*.css` changes on `main`. It can also be triggered manually.
+A workflow at [`.github/workflows/deploy-azure.yml`](.github/workflows/deploy-azure.yml) deploys the site to Azure Storage whenever `*.html` changes on `main`. It can also be triggered manually.
 
 ### Triggers
 
 | Trigger | When it fires |
 | --- | --- |
-| `push` to `main` | Only when the commit touches `**.html`, `**.css`, or the workflow file itself (`paths:` filter). |
+| `push` to `main` | Only when the commit touches `**.html` or the workflow file itself (`paths:` filter). |
 | `workflow_dispatch` | Manual run from the Actions UI or `gh` CLI — useful for ad-hoc redeploys without a code change. |
 
 `concurrency` is set to cancel in-progress runs for the same ref so only the latest commit's files end up in `$web`.
@@ -93,13 +92,13 @@ $conn | gh secret set AZURE_STORAGE_CONNECTION_STRING --repo roryp/demo-github
 ### What the workflow does
 
 1. `actions/checkout@v4` checks out the repository.
-2. Uses the Azure CLI pre-installed on `ubuntu-latest` to run `az storage blob upload-batch` with `--connection-string` (read from the secret) — once for `*.html`, once for `*.css` — targeting the `$web` container with `--overwrite`.
+2. Uses the Azure CLI pre-installed on `ubuntu-latest` to run `az storage blob upload-batch` with `--connection-string` (read from the secret) for `*.html`, targeting the `$web` container with `--overwrite`.
 3. Prints the public site URL at the end.
 
 ### Typical end-to-end flow
 
 ```text
-edit index.html / styles.css
+edit index.html
         │
         ▼
  commit + PR to main
@@ -115,7 +114,6 @@ https://demosite57342.z13.web.core.windows.net/  (changes live within seconds)
 
 ```powershell
 az storage blob upload-batch --account-name demosite57342 -s . -d '$web' --pattern "*.html" --overwrite
-az storage blob upload-batch --account-name demosite57342 -s . -d '$web' --pattern "*.css"  --overwrite
 ```
 
 ## Tear down

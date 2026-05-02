@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - '**.html'
-      - '**.css'
       - '.github/workflows/deploy-azure.yml'
   workflow_dispatch:
 
@@ -30,13 +29,6 @@ jobs:
             --source . \
             --destination '$web' \
             --pattern '*.html' \
-            --overwrite
-
-          az storage blob upload-batch \
-            --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
-            --source . \
-            --destination '$web' \
-            --pattern '*.css' \
             --overwrite
 
       - name: Print site URL
